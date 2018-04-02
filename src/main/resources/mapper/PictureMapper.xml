@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pulingle.picture_service.mapper.PictureMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pictureId" parameterType="Picture">
+        INSERT INTO picture(user_id,title,picture_name,picture_url,upload_time,size,content,album_id)
+        VALUES (#{userId},#{title},#{pictureName},#{pictureUrl},#{uploadTime},#{size},#{content},#{albumId})
+    </insert>
+
+</mapper>
