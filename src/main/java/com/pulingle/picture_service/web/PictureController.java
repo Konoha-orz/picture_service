@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
+
 
 /**
  * Created by 杨健 on 2018/3/30
@@ -23,6 +22,11 @@ public class PictureController {
     @Resource
     private PictureService pictureService;
 
+    /**
+     * @param: pictureDTO（图片传输对象）
+     * @return: respondBody
+     * @Des: 上传图片服务
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public RespondBody upload(PictureDTO pictureDTO) {
         return pictureService.uploadPicture(pictureDTO);

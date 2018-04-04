@@ -43,12 +43,7 @@ public class PictureServiceImpl implements PictureService {
     @Resource
     PictureMapper pictureMapper;
 
-    /**
-     * 图片上传服务
-     *
-     * @param
-     * @return
-     */
+
     @Override
     public RespondBody uploadPicture(PictureDTO pictureDTO) {
         RespondBody respondBody = new RespondBody();
@@ -96,4 +91,6 @@ public class PictureServiceImpl implements PictureService {
 
 
     }
+
+
 }

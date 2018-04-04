@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pulingle.picture_service.mapper.AlbumMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="albumId" parameterType="Album">
+        INSERT  INTO album(user_id,title,picture_list,content,background,layout)
+        VALUES (#{userId},#{title},#{pictureList},#{content},#{background},#{layout})
+    </insert>
+    <select id="queryAlbumsByUserId" resultType="java.util.Map" >
+        SELECT album_id AS albumId,title,picture_list AS pictureList,content,background,layout
+        FROM album WHERE user_id=#{userId}
+    </select>
+</mapper>

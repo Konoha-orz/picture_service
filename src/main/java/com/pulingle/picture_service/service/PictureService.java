@@ -9,9 +9,16 @@ import java.io.IOException;
 /**
  * Created by 杨健 on 2018/3/30
  *
- * @Des: 图片上传服务
+ * @Des: 图片服务
  */
 
 public interface PictureService {
+    /**
+    * @param: pictureDTO（图片传输对象）
+    * @return: respondBody
+    * @Des: 上传图片服务
+    */
     RespondBody uploadPicture(PictureDTO pictureDTO) ;
+
+
 }

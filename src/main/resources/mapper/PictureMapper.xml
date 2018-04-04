@@ -4,8 +4,14 @@
 
 <mapper namespace="com.pulingle.picture_service.mapper.PictureMapper">
     <insert id="insert" useGeneratedKeys="true" keyProperty="pictureId" parameterType="Picture">
-        INSERT INTO picture(user_id,title,picture_name,picture_url,upload_time,size,content,album_id)
+        INSERT  INTO picture(user_id,title,picture_name,picture_url,upload_time,size,content,album_id)
         VALUES (#{userId},#{title},#{pictureName},#{pictureUrl},#{uploadTime},#{size},#{content},#{albumId})
     </insert>
-
+    <select id="queryPictureByAlbumId" resultType="java.util.Map" >
+        SELECT picture_id AS pictureId,title,picture_url AS pictureUrl,upload_time AS uploadTime,content
+        FROM picture WHERE album_id=#{albumId}
+    </select>
+     <select id="countByAlbumId" resultType="java.lang.Integer">
+         SELECT COUNT(*) AS pictureNum FROM picture WHERE album_id=#{albumId}
+     </select>
 </mapper>
