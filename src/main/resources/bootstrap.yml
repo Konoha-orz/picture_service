@@ -1,6 +1,6 @@
 spring:
   application:
-    name: picture_service
+    name: picture-service
   cloud:
     config:
       profile: dev
