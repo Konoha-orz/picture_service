@@ -15,18 +15,11 @@ import java.util.Map;
 public interface PictureMapper {
 
     /**
-     * 插入图片信息
-     */
+    * @param: picture
+    * @return: int
+    * @Des: 插入一条照片记录
+    */
     int insert(Picture picture);
 
-    /**
-     *  查询相册图片信息
-     */
-     List<Map> queryPictureByAlbumId(long albumId);
-
-     /**
-      * 查询相册的图片数
-      */
-     int countByAlbumId(long albumId);
 
 }

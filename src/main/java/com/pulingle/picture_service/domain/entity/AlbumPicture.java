@@ -4,30 +4,24 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by @杨健 on 2018/4/2 13:11
+ * Created by @杨健 on 2018/5/1 17:18
  *
- * @Des: Picture实体类
+ * @Des: 照片墙照片实体类
  */
 
-public class Picture implements Serializable{
+public class AlbumPicture implements Serializable {
     /**
-     * 图片Id
+     * 照片id
      */
-    private long pictureId;
+    private String albumPictureId;
 
     /**
-     * 用户Id
+     * 用户id
      */
     private long userId;
 
-
     /**
-     * 图片文件名
-     */
-    private String pictureName;
-
-    /**
-     * 图片url
+     *  照片URL
      */
     private String pictureUrl;
 
@@ -46,12 +40,12 @@ public class Picture implements Serializable{
      */
     private String type;
 
-    public long getPictureId() {
-        return pictureId;
+    public String getAlbumPictureId() {
+        return albumPictureId;
     }
 
-    public void setPictureId(long pictureId) {
-        this.pictureId = pictureId;
+    public void setAlbumPictureId(String albumPictureId) {
+        this.albumPictureId = albumPictureId;
     }
 
     public long getUserId() {
@@ -60,14 +54,6 @@ public class Picture implements Serializable{
 
     public void setUserId(long userId) {
         this.userId = userId;
-    }
-
-    public String getPictureName() {
-        return pictureName;
-    }
-
-    public void setPictureName(String pictureName) {
-        this.pictureName = pictureName;
     }
 
     public String getPictureUrl() {
