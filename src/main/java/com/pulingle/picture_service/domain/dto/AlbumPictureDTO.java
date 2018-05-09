@@ -1,6 +1,9 @@
 package com.pulingle.picture_service.domain.dto;
 
+import com.pulingle.picture_service.domain.entity.Picture;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by @杨健 on 2018/5/1 18:08
@@ -15,9 +18,24 @@ public class AlbumPictureDTO implements Serializable {
     private long userId;
 
     /**
-     *  图片URL数组
+     *  图片信息数组
      */
-    private String[] pictureList;
+    private ArrayList<Picture> pictureList;
+
+    /**
+     * 每个月显示的图片数
+     */
+    private int pictureNum;
+
+    /**
+     * 当前页面数
+     */
+    private int currentPage;
+
+    /**
+     * 页面显示几个月的图片
+     */
+    private int pageSize;
 
     public long getUserId() {
         return userId;
@@ -27,11 +45,35 @@ public class AlbumPictureDTO implements Serializable {
         this.userId = userId;
     }
 
-    public String[] getPictureList() {
+    public ArrayList<Picture> getPictureList() {
         return pictureList;
     }
 
-    public void setPictureList(String[] pictureList) {
+    public void setPictureList(ArrayList<Picture> pictureList) {
         this.pictureList = pictureList;
+    }
+
+    public int getPictureNum() {
+        return pictureNum;
+    }
+
+    public void setPictureNum(int pictureNum) {
+        this.pictureNum = pictureNum;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }

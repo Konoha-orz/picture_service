@@ -3,8 +3,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.pulingle.picture_service.mapper.AlbumPictureMapper">
-    <insert id="insert" useGeneratedKeys="true" keyProperty="albumPictureId" parameterType="AlbumPicture">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pictureId" parameterType="Picture">
         INSERT  INTO album_picture(user_id,picture_url,upload_time,size,type)
         VALUES (#{userId},#{pictureUrl},#{uploadTime},#{size},#{type})
     </insert>
+    <select id="queryAlbumPictureByForWall" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT album_picture_id AS albumPictureId,user_id AS userId,picture_url AS pictureUrl,
+        DATE_FORMAT(upload_time,'%Y-%m-%d %h:%m:%s')AS uploadTime,DATE_FORMAT(upload_time,'%Y-%m')AS timeGroup,
+        size,type FROM album_picture
+        <where>
+            user_id= #{userId}
+            AND
+            DATE_FORMAT(upload_time,'%Y-%m')=DATE_FORMAT(date_sub(now(),interval #{monthNum} month),'%Y-%m')
+        </where>
+        ORDER BY upload_time DESC limit #{pictureNum}
+    </select>
+    <select id="queryAlbumMonth" parameterType="java.lang.Long" resultType="java.lang.String">
+        select DATE_FORMAT(upload_time,'%Y-%m') as monthColum from album_picture
+        <where>
+            user_id=#{userId}
+        </where>
+        group by monthColum
+    </select>
+    <select id="queryNewAlbumPicture" resultType="java.util.Map" parameterType="java.lang.Long">
+        SELECT album_picture_id AS albumPictureId,picture_url AS pictureUrl FROM album_picture
+        <where>
+            user_id=#{userId}
+        </where>
+        ORDER BY album_picture_id DESC limit #{num}
+    </select>
 </mapper>

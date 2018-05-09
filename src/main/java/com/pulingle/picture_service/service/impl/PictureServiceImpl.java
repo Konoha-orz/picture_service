@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by 杨健 on 2018/3/30
@@ -95,58 +94,69 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public RespondBody uploadAlbumPicture(PictureDTO pictureDTO) {
-        RespondBody respondBody = new RespondBody();
-        //文件大小检测
-        if (pictureDTO.getFile().getSize() > MAX_FILE_SIZE) {
-            respondBody = RespondBuilder.buildErrorResponse("文件大小大于:" + MAX_FILE_SIZE + "字节");
-            return respondBody;
-        }
-        try {
-            // 创建OSSClient实例
-            OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
-            String type = pictureDTO.getFile().getContentType();
-            ObjectMetadata meta = new ObjectMetadata();
-            meta.setContentType(type);
-            // 上传
-            String keyName = UUID.randomUUID().toString();
-            InputStream fileContent = pictureDTO.getFile().getInputStream();
-            ossClient.putObject(BUCKET_NAME, keyName, fileContent, meta);
-            // 关闭client
-            ossClient.shutdown();
-
-            //构建图片信息
-            AlbumPicture picture = new AlbumPicture();
-            picture.setUserId(pictureDTO.getUserId());
-            Date date = new Date();
-            picture.setUploadTime(date);
-            String pictureUrl = URL_PREFIX+BUCKET_NAME + "." + ENDPOINT_URL + "/" + keyName;
-            picture.setPictureUrl(pictureUrl);
-            picture.setSize(String.valueOf(pictureDTO.getFile().getSize()));
-            picture.setType(type);
-            //记录上传图片信息
-            albumPictureMapper.insert(picture);
-            respondBody = RespondBuilder.buildNormalResponse(picture);
-        } catch (IOException ioE) {
-            ioE.printStackTrace();
-            respondBody = RespondBuilder.buildErrorResponse("IO错误,获取文件失败");
+    public RespondBody syncroAlbum(AlbumPictureDTO albumPictureDTO) {
+        RespondBody respondBody;
+        try{
+            Date date=new Date();
+            for(Picture picture:albumPictureDTO.getPictureList()) {
+                picture.setUserId(albumPictureDTO.getUserId());
+                picture.setUploadTime(date);
+                albumPictureMapper.insert(picture);
+            }
+            respondBody=RespondBuilder.buildNormalResponse("照片同步成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            respondBody=RespondBuilder.buildErrorResponse(e.getMessage());
         }
         return respondBody;
     }
 
     @Override
-    public RespondBody syncroAlbum(AlbumPictureDTO albumPictureDTO) {
+    public RespondBody queryAlbumPictureByForWall(AlbumPictureDTO albumPictureDTO) {
+        RespondBody respondBody;
+        try {
+            //返回数据列
+            ArrayList resultList=new ArrayList();
+            //根据当前页数，和页面显示月数计算应减去的月数，如查询当前月，就-0，查询上个月-1
+            int currentMonth=(albumPictureDTO.getCurrentPage()-1)*albumPictureDTO.getPageSize();
+            //获取月份记录数
+            long recordNum=albumPictureMapper.queryAlbumMonth(albumPictureDTO.getUserId()).size();
+            double d = (double) recordNum / (double) albumPictureDTO.getPageSize();
+            long pageNum = (long) Math.ceil(d);
+            for(int i=0;i<albumPictureDTO.getPageSize();i++) {
+                //每个月的数据对象
+                Map mothMap=new HashMap();
+                List<Map> monthPictureList=albumPictureMapper.queryAlbumPictureByForWall(albumPictureDTO.getUserId(), albumPictureDTO.getPictureNum(),currentMonth);
+                if(monthPictureList.size()!=0) {
+                    if(monthPictureList.get(0).get("timeGroup")!=null) {
+                        String month = String.valueOf(monthPictureList.get(0).get("timeGroup"));
+                        mothMap.put("month", month);
+                    }
+                    mothMap.put("pictureInfoList", monthPictureList);
+                    resultList.add(mothMap);
+                }
+                currentMonth++;
+            }
+            HashMap resultMap=new HashMap();
+            resultMap.put("resultList",resultList);
+            resultMap.put("pageNum",pageNum);
+            resultMap.put("recordNum",recordNum);
+            resultMap.put("currentPage",albumPictureDTO.getCurrentPage());
+            resultMap.put("pageSize",albumPictureDTO.getPageSize());
+            respondBody=RespondBuilder.buildNormalResponse(resultMap);
+        }catch (Exception e){
+            e.printStackTrace();
+            respondBody=RespondBuilder.buildErrorResponse(e.getMessage());
+        }
+        return respondBody;
+    }
+
+    @Override
+    public RespondBody queryNewAlbumPicture(long userId, int num) {
         RespondBody respondBody;
         try{
-            for(String url:albumPictureDTO.getPictureList()) {
-                AlbumPicture albumPicture = new AlbumPicture();
-                albumPicture.setPictureUrl(url);
-                albumPicture.setUserId(albumPictureDTO.getUserId());
-                Date date=new Date();
-                albumPicture.setUploadTime(date);
-                albumPictureMapper.insert(albumPicture);
-            }
-            respondBody=RespondBuilder.buildNormalResponse(null);
+            List<Map> resultList=albumPictureMapper.queryNewAlbumPicture(userId,num);
+            respondBody=RespondBuilder.buildNormalResponse(resultList);
         }catch (Exception e){
             e.printStackTrace();
             respondBody=RespondBuilder.buildErrorResponse(e.getMessage());

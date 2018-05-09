@@ -31,16 +31,6 @@ public class PictureController {
     }
 
     /**
-     * @param: pictureDTO（图片传输对象）
-     * @return: respondBody
-     * @Des: 上传图片服务
-     */
-    @RequestMapping(value = "/uploadAlbumPicture", method = RequestMethod.POST)
-    public RespondBody uploadAlbumPicture(PictureDTO pictureDTO) {
-        return pictureService.uploadAlbumPicture(pictureDTO);
-    }
-
-    /**
     * @param: albumPictureDTO
     * @return: RespondBody
     * @Des: 动态图片同步到照片墙
@@ -48,6 +38,26 @@ public class PictureController {
     @RequestMapping(value = "/syncroAlbum",method = RequestMethod.POST)
     public RespondBody syncroAlbum(@RequestBody AlbumPictureDTO albumPictureDTO){
         return pictureService.syncroAlbum(albumPictureDTO);
+    }
+
+    /**
+    * @param: userId,pageSize,pictureNum,currentPage
+    * @return: RespondBody
+    * @Des: 获取个人图片墙简略照片信息
+    */
+    @RequestMapping(value = "/queryAlbumPictureByForWall",method = RequestMethod.POST)
+    public RespondBody queryAlbumPictureByForWall(@RequestBody AlbumPictureDTO albumPictureDTO){
+        return pictureService.queryAlbumPictureByForWall(albumPictureDTO);
+    }
+
+    /**
+     * @param: userId
+     * @return: List<AlbumPicture>
+     * @Des: 查询用户照片墙前n张照片
+     */
+    @RequestMapping(value = "/queryNewAlbumPicture",method = RequestMethod.POST)
+    public RespondBody queryNewAlbumPicture(@RequestBody AlbumPictureDTO albumPictureDTO){
+        return pictureService.queryNewAlbumPicture(albumPictureDTO.getUserId(),9);
     }
 
 }
