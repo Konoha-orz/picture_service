@@ -4,11 +4,14 @@ spring:
   cloud:
     config:
 #      profile: dev
-      profile: production
+#      profile: production
       label: master
       discovery:
         enabled: true
         service-id: config_server
+      profile: ZX
+
+
   rabbitmq:
     host: ${rabbitmq.host}
     port: ${rabbitmq.port}
@@ -22,6 +25,11 @@ eureka:
 #      defaultZone: http://120.78.81.233:8761/eureka/
   instance:
     prefer-ip-address: true
+    ip-address: 192.168.3.145
     #    指定服务IP地址
-    ip-address: 192.168.16.186
+    #  47.106.68.18 YK
+#    ip-address: 192.168.16.186
 #    ip-address: 47.106.68.18
+     # 119.23.105.177 ZX
+
+
