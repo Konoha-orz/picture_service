@@ -13,7 +13,7 @@ public class AlbumPicture implements Serializable {
     /**
      * 照片id
      */
-    private String albumPictureId;
+    private long albumPictureId;
 
     /**
      * 用户id
@@ -40,11 +40,11 @@ public class AlbumPicture implements Serializable {
      */
     private String type;
 
-    public String getAlbumPictureId() {
+    public long getAlbumPictureId() {
         return albumPictureId;
     }
 
-    public void setAlbumPictureId(String albumPictureId) {
+    public void setAlbumPictureId(long albumPictureId) {
         this.albumPictureId = albumPictureId;
     }
 

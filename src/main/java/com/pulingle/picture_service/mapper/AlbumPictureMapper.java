@@ -42,4 +42,18 @@ public interface AlbumPictureMapper {
     * @Des: 查询用户照片墙前n张照片
     */
     List<Map> queryNewAlbumPicture(@Param("userId")long userId,@Param("num")int num);
+
+    /**
+    * @param: albumPictureId
+    * @return: int
+    * @Des: 删除照片墙中的照片
+    */
+    int deleteAlbumPicture(@Param("albumPictureId")long albumPictureId);
+
+    /**
+    * @param: userId,monthStr
+    * @return: List<Map>
+    * @Des: 查询某用户某个年月的照片墙照片
+    */
+    List<Map> queryAlbumPictureByMonth(@Param("userId")long userId,@Param("monthStr")String monthStr,@Param("num")int num);
 }

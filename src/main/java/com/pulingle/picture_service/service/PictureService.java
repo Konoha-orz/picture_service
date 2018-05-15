@@ -44,4 +44,17 @@ public interface PictureService {
      */
     RespondBody queryNewAlbumPicture(long userId,int num);
 
+    /**
+    * @param: albumPictureId
+    * @return: RespondBody
+    * @Des: 根据albumPictureId删除图片
+    */
+    RespondBody deleteAlbumPicture(long albumPictureId);
+
+    /**
+     * @param: userId,monthStr
+     * @return: RespondBody
+     * @Des: 查询某用户某个年月的照片墙照片
+     */
+    RespondBody queryAlbumPictureByMonth(long userId,String monthStr,int num);
 }

@@ -164,5 +164,38 @@ public class PictureServiceImpl implements PictureService {
         return respondBody;
     }
 
+    @Override
+    public RespondBody deleteAlbumPicture(long albumPictureId) {
+        RespondBody respondBody;
+        try{
+            int i;
+            if(albumPictureId==0)
+                return RespondBuilder.buildErrorResponse("albumPictureId不能为0");
+            else
+                i=albumPictureMapper.deleteAlbumPicture(albumPictureId);
+            respondBody=RespondBuilder.buildNormalResponse(i);
+        }catch (Exception e){
+            e.printStackTrace();
+            respondBody=RespondBuilder.buildErrorResponse("图片删除错误");
+        }
+        return respondBody;
+    }
 
+    @Override
+    public RespondBody queryAlbumPictureByMonth(long userId, String monthStr,int num) {
+        RespondBody respondBody;
+        List<Map> resultList;
+        try{
+            if(userId==0)
+                return RespondBuilder.buildErrorResponse("用户ID不能为0");
+            if(monthStr==null||monthStr.equals(""))
+                return RespondBuilder.buildErrorResponse("月份不能空");
+            resultList=albumPictureMapper.queryAlbumPictureByMonth(userId,monthStr,num);
+            respondBody=RespondBuilder.buildNormalResponse(resultList);
+        }catch (Exception e){
+            e.printStackTrace();
+            respondBody =RespondBuilder.buildErrorResponse("获取照片失败");
+        }
+        return respondBody;
+    }
 }

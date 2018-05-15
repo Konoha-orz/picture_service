@@ -3,6 +3,7 @@ package com.pulingle.picture_service.web;
 import com.pulingle.picture_service.domain.dto.AlbumPictureDTO;
 import com.pulingle.picture_service.domain.dto.PictureDTO;
 import com.pulingle.picture_service.domain.dto.RespondBody;
+import com.pulingle.picture_service.domain.entity.AlbumPicture;
 import com.pulingle.picture_service.service.PictureService;
 import com.pulingle.picture_service.utils.RespondBuilder;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +61,23 @@ public class PictureController {
         return pictureService.queryNewAlbumPicture(albumPictureDTO.getUserId(),9);
     }
 
+    /**
+     * @param: albumPictureId
+     * @return: RespondBody
+     * @Des: 根据albumPictureId删除图片
+     */
+    @RequestMapping(value = "/deleteAlbumPicture",method = RequestMethod.POST)
+    public RespondBody deleteAlbumPicture(@RequestBody AlbumPicture albumPicture){
+        return pictureService.deleteAlbumPicture(albumPicture.getAlbumPictureId());
+    }
+
+    /**
+     * @param: userId,monthStr
+     * @return: RespondBody
+     * @Des: 查询某用户某个年月的照片墙照片
+     */
+    @RequestMapping(value = "/queryAlbumPictureByMonth",method = RequestMethod.POST)
+    RespondBody queryAlbumPictureByMonth(@RequestBody AlbumPictureDTO albumPictureDTO){
+        return pictureService.queryAlbumPictureByMonth(albumPictureDTO.getUserId(),albumPictureDTO.getMonth(),albumPictureDTO.getPictureNum());
+    }
 }

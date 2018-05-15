@@ -37,6 +37,13 @@ public class AlbumPictureDTO implements Serializable {
      */
     private int pageSize;
 
+    /**
+     * 月份
+     */
+    private String month;
+
+
+
     public long getUserId() {
         return userId;
     }
@@ -76,4 +83,15 @@ public class AlbumPictureDTO implements Serializable {
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+
+
 }
