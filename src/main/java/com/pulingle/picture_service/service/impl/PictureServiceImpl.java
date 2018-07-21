@@ -60,9 +60,10 @@ public class PictureServiceImpl implements PictureService {
             respondBody = RespondBuilder.buildErrorResponse("文件大小大于:" + MAX_FILE_SIZE + "字节");
             return respondBody;
         }
+
+        // 创建OSSClient实例
+        OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         try {
-            // 创建OSSClient实例
-            OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
             String type = pictureDTO.getFile().getContentType();
             ObjectMetadata meta = new ObjectMetadata();
             meta.setContentType(type);
@@ -70,8 +71,7 @@ public class PictureServiceImpl implements PictureService {
             String keyName = UUID.randomUUID().toString();
             InputStream fileContent = pictureDTO.getFile().getInputStream();
             ossClient.putObject(BUCKET_NAME, keyName, fileContent, meta);
-            // 关闭client
-            ossClient.shutdown();
+
 
             //构建图片信息
             Picture picture = new Picture();
@@ -89,6 +89,9 @@ public class PictureServiceImpl implements PictureService {
         } catch (IOException ioE) {
             ioE.printStackTrace();
             respondBody = RespondBuilder.buildErrorResponse("IO错误,获取文件失败");
+        }finally {
+            // 关闭client
+            ossClient.shutdown();
         }
         return respondBody;
     }
